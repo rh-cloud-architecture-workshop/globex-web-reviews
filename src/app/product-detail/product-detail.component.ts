@@ -46,6 +46,9 @@ export class ProductDetailComponent implements OnInit {
     if (this.testBrowser) {
       this.getProductDetails();
       this.fetchReview(this.productIdFromRoute);
+      interval(5000).subscribe(x => {
+        this.fetchReview(this.productIdFromRoute);
+      });
       
     }    
   }
@@ -79,13 +82,11 @@ export class ProductDetailComponent implements OnInit {
   reviewsList;
   fetchReview(productIdFromRoute) {
     
-      interval(8000).subscribe(x => {
         this.coolstoreCookiesService.getReviews(productIdFromRoute).subscribe(response => {
           this.reviewsList = response
           console.log("this.reviewsList", this.reviewsList)
         });    
-      });
-    
+      
     
     
   }

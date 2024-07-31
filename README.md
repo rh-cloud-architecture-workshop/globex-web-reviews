@@ -27,8 +27,8 @@ export SSO_LOG_LEVEL=2
 
 ## docker
 
-docker build -t quay.io/globex-sentiment-analysis/globex-web-reviews:latest -t quay.io/globex-sentiment-analysis/globex-web-reviews:e79dff1 .
-docker push quay.io/globex-sentiment-analysis/globex-web-reviews:e79dff1
-docker push quay.io/globex-sentiment-analysis/globex-web-reviews:latest
+podman build -t quay.io/globex-sentiment-analysis/globex-web-reviews:wip -t quay.io/globex-sentiment-analysis/globex-web-reviews:e79dff1 .
+podman push quay.io/globex-sentiment-analysis/globex-web-reviews:wip-6apr24
+podman push quay.io/globex-sentiment-analysis/globex-web-reviews:wip
 
 
