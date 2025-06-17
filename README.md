@@ -27,8 +27,5 @@ export SSO_LOG_LEVEL=2
 
 ## docker
 
-podman build -t quay.io/globex-sentiment-analysis/globex-web-reviews:wip -t quay.io/globex-sentiment-analysis/globex-web-reviews:e79dff1 .
-podman push quay.io/globex-sentiment-analysis/globex-web-reviews:wip-6apr24
-podman push quay.io/globex-sentiment-analysis/globex-web-reviews:wip
-
-
+podman build --platform=linux/amd64 -t quay.io/cloud-architecture-workshop/globex-web-reviews:no-offline . 
+podman push quay.io/cloud-architecture-workshop/globex-web-reviews:no-offline
