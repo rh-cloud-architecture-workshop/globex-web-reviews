@@ -104,7 +104,10 @@ export class CoolstoreCookiesService {
 
   }
 
-  submitReview(product,reviewText, user) {
+  submitReview(product,reviewText, rating, user) {
+
+    var timestamp = new Date().toISOString()
+
     let prodReviewObj = {
       "product" : {
         "product_id": product.itemId,
@@ -118,11 +121,13 @@ export class CoolstoreCookiesService {
         "browser": "Chrome",
         "region": "India"
       },
-      "rating": 0,
-      "timestamp": Date.now(),
+      "rating": rating,
+      "timestamp": timestamp.split('.')[0] + 'Z',
       "review_text": reviewText
       
     }
+    console.log("prodReviewObj before sending", prodReviewObj)
+    
     this.customerService.getCustomerInfo(user)
       .subscribe(c => {
         prodReviewObj.user.name =  c.firstName + " " + c.lastName;
@@ -141,8 +146,16 @@ export class CoolstoreCookiesService {
   }
 
   saveReview(prodReviewObj): Observable<any> {
-    return this.http.post<any>(serverEnvConfig.ANGULR_API_SAVE_PROD_REVIEW, prodReviewObj)
-      .pipe(catchError(this.handleError('prodReviewObj', prodReviewObj)));
+    var reviewObj = {"id": uuidv4(), 
+                      "user": prodReviewObj.user.customer_id, 
+                      "product_code": prodReviewObj.product.product_id, 
+                      "product": prodReviewObj.product.product_name, 
+                       "stars": prodReviewObj.rating, 
+                       "review": prodReviewObj.review_text, 
+                       "created": prodReviewObj.timestamp};
+    console.log("prodReviewObj to be sent", reviewObj)
+    return this.http.post<any>(serverEnvConfig.ANGULR_API_SAVE_PROD_REVIEW, reviewObj)
+      .pipe(catchError(this.handleError('reviewObj', reviewObj)));
   }
 
   fetchReview(itemId) {

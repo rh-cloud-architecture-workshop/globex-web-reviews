@@ -25,6 +25,10 @@
                 
                     <textarea rows="3" class="form-control" placeholder="Write a review" [(ngModel)]="reviewText" maxlength="500" 
                             [disabled]="!loginService.isUserAuthenticated()"></textarea>
+                    <div>
+                        <ngb-rating  [(rate)]="rating" [readonly]="!loginService.isUserAuthenticated()"/>
+                    </div>
+
                     <div class="margin-top-10">
                         <button type="submit" class="btn btn-sm btn-primary pull-right margin-top-10" style="margin-top: 10px;" (click)="submitReview()"
                         [disabled]="reviewText.length < 3 || !loginService.isUserAuthenticated()">

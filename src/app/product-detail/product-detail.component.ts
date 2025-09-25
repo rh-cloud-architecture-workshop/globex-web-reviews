@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { LoginService } from '../login.service';
 import { interval } from 'rxjs';
+import { NgbRatingConfig, NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-product-detail',
@@ -21,6 +22,7 @@ export class ProductDetailComponent implements OnInit {
   cartService:CartService;
   coolstoreCookiesService:CoolstoreCookiesService;
   loginService: LoginService;
+  rating = 0;
   
   productIdFromRoute:string;  
   currentProduct;
@@ -29,13 +31,16 @@ export class ProductDetailComponent implements OnInit {
   reviewText="";
   
   constructor(coolStoreService:CoolStoreProductsService, cookieService: CookieService, loginService: LoginService, private router: Router,
-    coolstoreCookiesService:CoolstoreCookiesService, cartService:CartService, private route: ActivatedRoute, @Inject(PLATFORM_ID) platformId:string) {
+    coolstoreCookiesService:CoolstoreCookiesService, cartService:CartService, private route: ActivatedRoute, @Inject(PLATFORM_ID) platformId:string,
+    config: NgbRatingConfig) {
     this.coolStoreService = coolStoreService;
     this.cartService = cartService;
     this.cookieService = cookieService;
     this.coolstoreCookiesService = coolstoreCookiesService;
     this.testBrowser = isPlatformBrowser(platformId);
     this.loginService = loginService;
+    config.max = 5;
+   
   }
 
   ngOnInit(): void {
@@ -75,7 +80,7 @@ export class ProductDetailComponent implements OnInit {
   }
 
   submitReview() {
-    this.coolstoreCookiesService.submitReview(this.currentProduct, this.reviewText,this.loginService.getAuthenticatedUser());    
+    this.coolstoreCookiesService.submitReview(this.currentProduct, this.reviewText, this.rating, this.loginService.getAuthenticatedUser());    
     this.reviewText = '';
   }
   
