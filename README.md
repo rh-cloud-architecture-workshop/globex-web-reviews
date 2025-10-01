@@ -20,7 +20,7 @@ export API_ORDER_SERVICE="http://localhost:8080/web-gateway/services/order"
 
 ### reviews specific
 export API_SAVE_PROD_REVIEW = "http://localhost:3000/review/submit"
-export API_FETCH_PROD_REVIEW="http://localhost:3000/reviews/list"
+export API_FETCH_PROD_REVIEWS="http://localhost:3000/reviews/list"
 export API_FETCH_PROD_REVIEWS_SUMMARY="http://localhost:3000/reviews/summary"
   
 export SSO_CUSTOM_CONFIG="globex-web-gateway"

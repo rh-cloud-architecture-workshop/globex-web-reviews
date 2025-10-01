@@ -57,7 +57,7 @@ export function app(): express.Express {
   const API_MANAGEMENT_FLAG = get('API_MANAGEMENT_FLAG').default("NO").asString();
   const API_TRACK_USERACTIVITY = get('API_TRACK_USERACTIVITY').default('http://d8523dbb-977d-4d5c-be98-aef3da676192.mock.pstmn.io/track').asString();
   const API_SAVE_PROD_REVIEW = get('API_SAVE_PROD_REVIEW').asString();
-  const API_FETCH_PROD_REVIEW = get('API_FETCH_PROD_REVIEW').asString();
+  const API_FETCH_PROD_REVIEWS = get('API_FETCH_PROD_REVIEWS').asString();
   const API_FETCH_PROD_REVIEWS_SUMMARY = get('API_FETCH_PROD_REVIEWS_SUMMARY').asString();
   const API_GET_PAGINATED_PRODUCTS = get('API_GET_PAGINATED_PRODUCTS').default('http://3ea8ea3c-2bc9-45ae-9dc9-73aad7d8eafb.mock.pstmn.io/services/products').asString();
   const API_GET_PRODUCT_DETAILS_BY_IDS = get('API_GET_PRODUCT_DETAILS_BY_IDS').default('http://3ea8ea3c-2bc9-45ae-9dc9-73aad7d8eafb.mock.pstmn.io/services/product/list/').asString();
@@ -238,11 +238,11 @@ export function app(): express.Express {
     var page = req.query['page'];
     let productId = req.params.productId;
     var myTimestamp = new Date().getTime().toString();
-    axios.get(API_FETCH_PROD_REVIEW + '/' + productId, {params: { limit: limit, timestamp:myTimestamp , page: page } })    
+    axios.get(API_FETCH_PROD_REVIEWS + '/' + productId, {params: { limit: limit, timestamp:myTimestamp , page: page } })    
       .then(response => {        
         res.send(response.data)
       })
-      .catch(error => console.log("API_FETCH_PROD_REVIEW"));
+      .catch(error => console.log("API_FETCH_PROD_REVIEWS"));
   })
 
   // Get Reviews Summary API call
