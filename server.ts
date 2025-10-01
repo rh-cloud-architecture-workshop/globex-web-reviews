@@ -34,7 +34,8 @@ export function app(): express.Express {
   const ANGULR_API_GETRECOMMENDEDPRODUCTS =  '/api/getRecommendedProducts';
   const ANGULR_API_TRACKUSERACTIVITY = '/api/trackUserActivity';
   const ANGULR_API_SAVE_PROD_REVIEW = '/api/saveProductReview';
-  const ANGULR_API_FETCH_PROD_REVIEW = '/api/fetchProductReview';
+  const ANGULR_API_FETCH_PROD_REVIEWS = '/api/fetchProductReview';
+  const ANGULR_API_FETCH_PROD_REVIEWS_SUMMARY = '/api/fetchProductReviewsSummary'
   const ANGULR_API_GETPRODUCTDETAILS_FOR_IDS = '/api/getProductDetailsForIds';
   const ANGULR_HEALTH = '/health';
   const ANGULR_API_CART = '/api/cart';
@@ -57,6 +58,7 @@ export function app(): express.Express {
   const API_TRACK_USERACTIVITY = get('API_TRACK_USERACTIVITY').default('http://d8523dbb-977d-4d5c-be98-aef3da676192.mock.pstmn.io/track').asString();
   const API_SAVE_PROD_REVIEW = get('API_SAVE_PROD_REVIEW').asString();
   const API_FETCH_PROD_REVIEW = get('API_FETCH_PROD_REVIEW').asString();
+  const API_FETCH_PROD_REVIEWS_SUMMARY = get('API_FETCH_PROD_REVIEWS_SUMMARY').asString();
   const API_GET_PAGINATED_PRODUCTS = get('API_GET_PAGINATED_PRODUCTS').default('http://3ea8ea3c-2bc9-45ae-9dc9-73aad7d8eafb.mock.pstmn.io/services/products').asString();
   const API_GET_PRODUCT_DETAILS_BY_IDS = get('API_GET_PRODUCT_DETAILS_BY_IDS').default('http://3ea8ea3c-2bc9-45ae-9dc9-73aad7d8eafb.mock.pstmn.io/services/product/list/').asString();
   const API_CATALOG_RECOMMENDED_PRODUCT_IDS = get('API_CATALOG_RECOMMENDED_PRODUCT_IDS').default('http://e327d0a8-a4cc-4e60-8707-51a295f04f76.mock.pstmn.io/score/product').asString();
@@ -231,14 +233,27 @@ export function app(): express.Express {
   });
 
   // Get Reviews API call
-  server.get(ANGULR_API_FETCH_PROD_REVIEW + '/:productId', (req, res) => {
+  server.get(ANGULR_API_FETCH_PROD_REVIEWS + '/:productId', (req, res) => {
+    var limit = req.query['limit'];
+    var page = req.query['page'];
     let productId = req.params.productId;
-    axios.get(API_FETCH_PROD_REVIEW + '/' + productId)
+    var myTimestamp = new Date().getTime().toString();
+    axios.get(API_FETCH_PROD_REVIEW + '/' + productId, {params: { limit: limit, timestamp:myTimestamp , page: page } })    
+      .then(response => {        
+        res.send(response.data)
+      })
+      .catch(error => console.log("API_FETCH_PROD_REVIEW"));
+  })
+
+  // Get Reviews Summary API call
+  server.get(ANGULR_API_FETCH_PROD_REVIEWS_SUMMARY + '/:productId', (req, res) => {
+    let productId = req.params.productId;
+    axios.get(API_FETCH_PROD_REVIEWS_SUMMARY + '/' + productId)
       .then(response => {
         
         res.send(response.data)
       })
-      .catch(error => console.log("API_FETCH_PROD_REVIEW", error));
+      .catch(error => console.log("API_FETCH_PROD_REVIEWS_SUMMARY", error));
   })
 
   // Get CART API call

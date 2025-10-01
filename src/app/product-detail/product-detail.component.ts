@@ -8,6 +8,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { LoginService } from '../login.service';
 import { interval } from 'rxjs';
 import { NgbRatingConfig, NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
+import serverEnvConfig from "client.env.config";
 
 @Component({
   selector: 'app-product-detail',
@@ -23,12 +24,15 @@ export class ProductDetailComponent implements OnInit {
   coolstoreCookiesService:CoolstoreCookiesService;
   loginService: LoginService;
   rating = 0;
+  paginationLimit = serverEnvConfig.ANGULR_API_GETPAGINATEDPRODUCTS_LIMIT; //number of products per page
   
   productIdFromRoute:string;  
   currentProduct;
   isProductLiked = false;
   testBrowser: boolean;
   reviewText="";
+  page = 1;
+  
   
   constructor(coolStoreService:CoolStoreProductsService, cookieService: CookieService, loginService: LoginService, private router: Router,
     coolstoreCookiesService:CoolstoreCookiesService, cartService:CartService, private route: ActivatedRoute, @Inject(PLATFORM_ID) platformId:string,
@@ -50,9 +54,12 @@ export class ProductDetailComponent implements OnInit {
     console.log("productIdFromRoute", this.productIdFromRoute)
     if (this.testBrowser) {
       this.getProductDetails();
-      this.fetchReview(this.productIdFromRoute);
+      this.fetchReviews(this.page);
+      this.fetchReviewsSummary(this.page);
+      
       interval(5000).subscribe(x => {
-        this.fetchReview(this.productIdFromRoute);
+        this.fetchReviews(this.page);
+        this.fetchReviewsSummary(this.page);
       });
       
     }    
@@ -85,16 +92,30 @@ export class ProductDetailComponent implements OnInit {
   }
   
   reviewsList;
-  fetchReview(productIdFromRoute) {
+  fetchReviews(event) {
     
-        this.coolstoreCookiesService.getReviews(productIdFromRoute).subscribe(response => {
-          this.reviewsList = response
+        this.coolstoreCookiesService.fetchReviews(this.productIdFromRoute, this.page).subscribe(response => {
+          this.reviewsList = response;
           console.log("this.reviewsList", this.reviewsList)
-        });    
-      
-    
-    
+        }); 
   }
+  
+  reviewsSummary;
+  fetchReviewsSummary(event) {
+
+        this.coolstoreCookiesService.getReviewsSummary(this.productIdFromRoute).subscribe(response => {
+          this.reviewsSummary = response
+          console.log("this.reviewsSummary", this.reviewsSummary)
+        });
+  }
+
+  loadPage(page){
+    if(this.page != page) {
+      this.page = page;
+      this.fetchReviews(page);
+    }
+  }
+
    
   removeProductLike(event, product) {
     this.coolstoreCookiesService.removeProductLike(event, product);

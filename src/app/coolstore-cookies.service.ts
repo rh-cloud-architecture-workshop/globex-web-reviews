@@ -24,6 +24,7 @@ export class CoolstoreCookiesService {
   http: HttpClient;
   userActivityObj;
 
+  paginationLimit = serverEnvConfig.ANGULR_API_GETPAGINATEDPRODUCTS_LIMIT; //number of products per page
 
   constructor(cookieService: CookieService, private route: ActivatedRoute, http: HttpClient, httpErrorHandler: HttpErrorHandler, 
     private customerService: CustomerService, private toastr: ToastrService) {
@@ -158,16 +159,17 @@ export class CoolstoreCookiesService {
       .pipe(catchError(this.handleError('reviewObj', reviewObj)));
   }
 
-  fetchReview(itemId) {
-    this.getReviews(itemId).subscribe(response => {
-        console.log("CoolstoreService >> submitReview >> resonse", response)
-        return response;
 
-    });
+
+  fetchReviews(itemId, page): Observable<any> {
+    return this.http.get<any>(serverEnvConfig.ANGULR_API_FETCH_PROD_REVIEWS + "/" + itemId +"?page="+page + "&limit="+this.paginationLimit )
+      .pipe(catchError(this.handleError('prodReviewObj', itemId)));
+
+      
   }
 
-  getReviews(itemId): Observable<any> {
-    return this.http.get<any>(serverEnvConfig.ANGULR_API_FETCH_PROD_REVIEW + "/" + itemId)
+  getReviewsSummary(itemId): Observable<any> {
+    return this.http.get<any>(serverEnvConfig.ANGULR_API_FETCH_PROD_REVIEWS_SUMMARY + "/" + itemId)
       .pipe(catchError(this.handleError('prodReviewObj', itemId)));
   }
 
