@@ -13,13 +13,13 @@ Run the globex-store  globex-db images locally and setup these URLs
 export API_TRACK_USERACTIVITY="http://localhost:3000/track"
 export API_GET_PAGINATED_PRODUCTS="http://localhost:3000/services/catalog/product"
 export API_GET_PRODUCT_DETAILS_BY_IDS="http://localhost:3000/services/catalog/product/:ids" 
-export API_CATALOG_RECOMMENDED_PRODUCT_IDS="http://localhost:9000/score/product"
+export API_CATALOG_RECOMMENDED_PRODUCT_IDS="http://localhost:3000/score/product"
 export API_CART_SERVICE="http://localhost:3000/services/cart"
 export API_CUSTOMER_SERVICE="http://localhost:3000/services/customer/id/:custId"
-export API_ORDER_SERVICE="http://localhost:8080/web-gateway/services/order"
+export API_ORDER_SERVICE="http://localhost:3000/web-gateway/services/order"
 
 ### reviews specific
-export API_SAVE_PROD_REVIEW = "http://localhost:3000/review/submit"
+export API_SAVE_PROD_REVIEW="http://localhost:3000/review/submit"
 export API_FETCH_PROD_REVIEWS="http://localhost:3000/reviews/list"
 export API_FETCH_PROD_REVIEWS_SUMMARY="http://localhost:3000/reviews/summary"
   

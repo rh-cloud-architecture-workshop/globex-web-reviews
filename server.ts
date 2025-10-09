@@ -55,16 +55,16 @@ export function app(): express.Express {
 
   // external micro services typically running on OpenShift
   const API_MANAGEMENT_FLAG = get('API_MANAGEMENT_FLAG').default("NO").asString();
-  const API_TRACK_USERACTIVITY = get('API_TRACK_USERACTIVITY').default('http://d8523dbb-977d-4d5c-be98-aef3da676192.mock.pstmn.io/track').asString();
-  const API_SAVE_PROD_REVIEW = get('API_SAVE_PROD_REVIEW').asString();
-  const API_FETCH_PROD_REVIEWS = get('API_FETCH_PROD_REVIEWS').asString();
-  const API_FETCH_PROD_REVIEWS_SUMMARY = get('API_FETCH_PROD_REVIEWS_SUMMARY').asString();
-  const API_GET_PAGINATED_PRODUCTS = get('API_GET_PAGINATED_PRODUCTS').default('http://3ea8ea3c-2bc9-45ae-9dc9-73aad7d8eafb.mock.pstmn.io/services/products').asString();
-  const API_GET_PRODUCT_DETAILS_BY_IDS = get('API_GET_PRODUCT_DETAILS_BY_IDS').default('http://3ea8ea3c-2bc9-45ae-9dc9-73aad7d8eafb.mock.pstmn.io/services/product/list/').asString();
-  const API_CATALOG_RECOMMENDED_PRODUCT_IDS = get('API_CATALOG_RECOMMENDED_PRODUCT_IDS').default('http://e327d0a8-a4cc-4e60-8707-51a295f04f76.mock.pstmn.io/score/product').asString();
+  const API_TRACK_USERACTIVITY = get('API_TRACK_USERACTIVITY').default('').asString();
+  const API_SAVE_PROD_REVIEW = get('API_SAVE_PROD_REVIEW').default('').asString();
+  const API_FETCH_PROD_REVIEWS = get('API_FETCH_PROD_REVIEWS').default('').asString();
+  const API_FETCH_PROD_REVIEWS_SUMMARY = get('API_FETCH_PROD_REVIEWS_SUMMARY').default('').asString();
+  const API_GET_PAGINATED_PRODUCTS = get('API_GET_PAGINATED_PRODUCTS').default('').asString();
+  const API_GET_PRODUCT_DETAILS_BY_IDS = get('API_GET_PRODUCT_DETAILS_BY_IDS').default('').asString();
+  const API_CATALOG_RECOMMENDED_PRODUCT_IDS = get('API_CATALOG_RECOMMENDED_PRODUCT_IDS').default('').asString();
   const API_CART_SERVICE = get('API_CART_SERVICE').default('').asString();
   const API_CUSTOMER_SERVICE = get('API_CUSTOMER_SERVICE').default('').asString();
-  const API_ORDER_SERVICE = get('API_ORDER_SERVICE').asString();
+  const API_ORDER_SERVICE = get('API_ORDER_SERVICE').default('').asString();
 
   //setup keycloak auth settings
   const SSO_CUSTOM_CONFIG = get('SSO_CUSTOM_CONFIG').default('').asString();
@@ -76,7 +76,7 @@ export function app(): express.Express {
   
   //3SCALE INTEGRATION FOR AUTH KEY BASED AUTHENTICATION
   const API_USER_KEY_NAME = get('USER_KEY').default('api_key').asString();
-  const API_USER_KEY_VALUE = get('API_USER_KEY_VALUE').default('8efad5cc78ecbbb7dbb8d06b04596aeb').asString();
+  const API_USER_KEY_VALUE = get('API_USER_KEY_VALUE').asString();
 
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
   server.engine('html', ngExpressEngine({
@@ -169,7 +169,7 @@ export function app(): express.Express {
         var returnData = getRecommendedProducts.map(t1 => ({...t1, ...prodDetailsArray.find(t2 => t2.itemId === t1.productId)}));
         returnData = returnData.slice(0,RECOMMENDED_PRODUCTS_LIMIT);
         res.send(returnData);
-      }).catch(error => { console.log("ANGULR_API_GETRECOMMENDEDPRODUCTS", error); });
+      }).catch(error => { console.log("ANGULR_API_GETRECOMMENDEDPRODUCTS: Response status: ", error.response.status, error.response.statusText); });
   });
 
 
@@ -253,7 +253,7 @@ export function app(): express.Express {
         
         res.send(response.data)
       })
-      .catch(error => console.log("API_FETCH_PROD_REVIEWS_SUMMARY", error));
+      .catch(error => console.log("API_FETCH_PROD_REVIEWS_SUMMARY", API_FETCH_PROD_REVIEWS_SUMMARY + '/' + productId, error.code));
   })
 
   // Get CART API call

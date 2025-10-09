@@ -44,7 +44,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card"  *ngIf="reviewsSummary && reviewsSummary.summary">
         <div class="container">
                 <h4>Customer Reviews Summary </h4>            
                 <ngb-rating  [(rate)]="reviewsSummary.average_score" /> <br><br>
@@ -60,7 +60,7 @@
 
   
 
-    <div class="card">
+    <div class="card"  *ngIf="reviewsList && reviewsList.reviews && reviewsList.reviews.length > 0">
         <h4>Customer reviews</h4>
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light" >
