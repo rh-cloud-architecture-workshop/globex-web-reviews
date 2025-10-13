@@ -23,7 +23,7 @@
             <div class="margin-top-10">
                 <br />        
                 
-                    <textarea rows="3" class="form-control" placeholder="Write a review" [(ngModel)]="reviewText" maxlength="500" 
+                    <textarea rows="3" class="form-control" placeholder="Write a review" [(ngModel)]="reviewText" maxlength="2048" 
                             [disabled]="!loginService.isUserAuthenticated()"></textarea>
                     <div>
                         <ngb-rating  [(rate)]="rating" [readonly]="!loginService.isUserAuthenticated()"/>
