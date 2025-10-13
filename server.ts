@@ -242,7 +242,10 @@ export function app(): express.Express {
       .then(response => {        
         res.send(response.data)
       })
-      .catch(error => console.log("API_FETCH_PROD_REVIEWS"));
+      .catch(error => {
+        console.log("API_FETCH_PROD_REVIEWS: Error occured ", error.message);
+        res.send({})
+      });
   })
 
   // Get Reviews Summary API call
@@ -253,7 +256,11 @@ export function app(): express.Express {
         
         res.send(response.data)
       })
-      .catch(error => console.log("API_FETCH_PROD_REVIEWS_SUMMARY", API_FETCH_PROD_REVIEWS_SUMMARY + '/' + productId, error.code));
+      .catch(error => 
+        {
+          console.log("API_FETCH_PROD_REVIEWS_SUMMARY: Error occured ", error.message);
+          res.send({})
+        });
   })
 
   // Get CART API call
@@ -480,8 +487,3 @@ if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
 }
 
 export * from './src/main.server';
-
-
-
-
-
